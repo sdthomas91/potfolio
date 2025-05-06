@@ -1,28 +1,22 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import Image from "next/image";
+// src/components/ProjectCard.tsx
+import { urlFor } from "@/sanity/imageUrl";
 
-type ProjectCardProps = {
+interface ProjectCardProps {
   title: string;
   description: string;
-  imageUrl: string;
-};
+  image: any; // ideally a SanityImage type, but `any` works for now
+}
 
-export default function ProjectCard({ title, description, imageUrl }: ProjectCardProps) {
+export default function ProjectCard({ title, description, image }: ProjectCardProps) {
+  const imageUrl = urlFor(image).width(500).height(300).url();
+
   return (
-    <Card className="w-full max-w-sm shadow-md hover:shadow-lg transition-shadow duration-300">
-      <CardHeader>
-        <CardTitle className="text-lg">{title}</CardTitle>
-        <CardDescription className="text-sm text-muted-foreground">{description}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Image
-          src={imageUrl}
-          alt={title}
-          width={400}
-          height={300}
-          className="rounded-md object-cover"
-        />
-      </CardContent>
-    </Card>
+    <div className="rounded-lg overflow-hidden border bg-card shadow-md p-4">
+      {image && (
+        <img src={imageUrl} alt={title} className="w-full rounded mb-4" />
+      )}
+      <h3 className="text-xl font-semibold mb-2">{title}</h3>
+      <p className="text-muted-foreground">{description}</p>
+    </div>
   );
 }
